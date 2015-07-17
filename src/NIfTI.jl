@@ -124,7 +124,7 @@ voxel_size(header::NIfTI1Header) =
 time_step(header::NIfTI1Header) =
     header.pixdim[5] * TIME_UNIT_MULTIPLIERS[header.xyzt_units >> int8(3)]
 
-function to_dim_info(dim_info::(Integer, Integer, Integer))
+function to_dim_info(dim_info::Tuple{Integer, Integer, Integer})
     if dim_info[1] > 3 || dim_info[1] < 0
         error("Invalid frequency dimension $(dim_info[1])")
     elseif dim_info[2] > 3 || dim_info[2] < 0
@@ -139,7 +139,7 @@ end
 # Returns or sets dim_info as a tuple whose values are the frequency, phase, and slice dimensions
 dim_info(header::NIfTI1Header) = (header.dim_info & int8(3), (header.dim_info >> 2) & int8(3),
     (header.dim_info >> 4) & int8(3))
-dim_info{T <: Integer}(header::NIfTI1Header, dim_info::(T, T, T)) =
+dim_info{T <: Integer}(header::NIfTI1Header, dim_info::Tuple{T, T, T}) =
     header.dim_info = to_dim_info(dim_info)
 
 # Gets dim to be used in header
